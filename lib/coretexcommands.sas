@@ -65,7 +65,7 @@
 %mend;
 
 
-%macro s2p_headerfooter;
+%macro s2p_headerfooter(header_icon);
 	%t('\usepackage{fancyhdr}');
 	%t('\usepackage{lastpage}');
 	%t('\makeatletter');
@@ -74,7 +74,9 @@
 	%t('\setlength{\headheight}{15pt}');
 	%t('\pagestyle{fancyplain}');
 	%t('\fancyhf{}');
-	%t('\rhead{ \fancyplain{}{\includegraphics[width=1cm]{'%sysfunc(tranwrd(&s2p.,%str(\),%str(/)))'/media/imbi/Logo-IMBI-sw_ohne_Text_header.png}} }');
+	%IF &header_icon. ne None %THEN %DO;
+		%t('\rhead{ \fancyplain{}{\includegraphics[width=1cm]{'&header_icon.'}} }');
+		%END; 
 	%t('\chead{ \fancyplain{}{\inserttitle} }');
 	%t('\lhead{ \fancyplain{}{\today} }');
 	%t('\cfoot{ \fancyplain{}{\thepage\ of \pageref{LastPage}} }');
@@ -83,6 +85,7 @@
 %macro s2p_standard_preprocessing(
 	project=DefaultProjectName,
 	title=DefaultTitle,
+	header_icon=None,
 	author=DefaultAuthor,
 	titlepage=None, 
 	outdir=None);
@@ -102,9 +105,14 @@
 	%s2p_title(&title.);
 	%s2p_author(&author.);
 
-	%s2p_headerfooter;
+	%s2p_headerfooter(&header_icon.);
 
 	%s2p_begindoc;
+
+	%if &titlepage. ne None %then %do;
+		%t('\input{'&titlepage.'}');
+		%end; 
+
 	%s2p_maketitle;
 	%s2p_tableofcontents;
 

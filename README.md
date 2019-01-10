@@ -32,7 +32,7 @@ The S2P system variable can be loaded in one of two ways.
 1. The preferred way is to set the path to `\lib\collector.sas` in the `autoexec.sas` that is loaded at SAS program start-up by adding the following line to `autoexec.sas`:
 
 ```
-x ‘if not defined S2P setx S2P ‘’\your\path\to\sas2pdf\lib\collector.sas’’’;
+x 'setx S2P ''\your\path\to\sas2pdf\lib\collector.sas''';
 ```
 Note: If the S2P system variable is set via `autoexec.sas` for the first time, it might be necessary to re-start SAS once, so that the S2P variable is properly registered. 
 
