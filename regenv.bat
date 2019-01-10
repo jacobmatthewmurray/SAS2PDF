@@ -1,0 +1,1 @@
+setx S2P "'%cd%\lib\collector.sas'"
