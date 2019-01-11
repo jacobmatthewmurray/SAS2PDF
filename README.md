@@ -1,6 +1,6 @@
 # SAS2PDF
 
-SAS2PDF is a package of SAS macros that enables immedidate pdf creation via a Latex intermediate directly from the SAS-Editor at the time of SAS code execution. PDF creation does not interfer with SAS code execution and SAS code outputs can be selectively added to the PDF. SAS outputs that are currently supported for PDF inclusion are tables, images, code snippets. 
+SAS2PDF is a package of SAS macros that enables immediate pdf creation via a Latex intermediate directly from the SAS-Editor at the time of SAS code execution. PDF creation does not interfer with SAS code execution and SAS code outputs can be selectively added to the PDF. SAS outputs that are currently supported for PDF inclusion are tables, images, code snippets. 
 
 SAS2PDF was created at IMBI Heidelberg, Germany and builds on work by Perttola, J ("SAS and Latex - a Perfect Match?") and syntax highlighting by mcaceresb (see [References](#references)).
 
@@ -68,14 +68,14 @@ A basic .sas editor file that includes SAS2PDF functionality takes the form of t
 ```
 
 1. `%include %sysget(S2P);` enables the .sas file to use the SAS2PDF package.
-2. `%s2p_standard_preprocessing();` and `%s2p_standard_preprocessing;` wrap the entire .sas file. They must be the first and last macro call respectively. `%s2p_standard_preprocessing();` takes the following arguments:
+2. `%s2p_standard_preprocessing();` and `%s2p_standard_postprocessing;` wrap the entire .sas file. They must be the first and last macro call respectively. `%s2p_standard_preprocessing();` takes the following arguments:
    * project (Default=DefaultProjectName): This will be the name of the final .pdf file.
-   * title (Default=DefaultTitle): This will be the title of in the final .pdf file.
+   * title (Default=DefaultTitle): This will be the title of the final .pdf file.
    * header_icon (Default=None): This icon will appear in the top right-hand corner of the header starting on page 2. Provide the argument as header_icon=/path/to/icon.png.
    * author (Default=DefaultAuthor): This will be the author of the .pdf.
    * titlepage (Default=None): This title page will be added if /path/to/title is provided. 
    * outdir (Default=None): If outdir is not set as /path/to/outdir then an output folder is created in the directory of the exectued .sas file. 
-3. `%s2p_text();`, `%s2p_section();`, and similar tags provide for a way for inserting text as well as for basic wrapping of standard Latex commands. All text inserted via `%s2p_text();` should be wrapped in single quotations.
+3. `%s2p_text();`, `%s2p_section();`, and similar tags provide for a way for inserting text as well as for basic wrapping of standard Latex commands. All text inserted via `%s2p_text();` should be wrapped in single quotations. Macro variables should be placed outside of quotations. 
 4. `%s2p_preoutreg(procmeansclass);` and `%s2p_postoutreg(procmeansclass);` are used to wrap a SAS statement that should be registered with the SAS2PDF module and whose output should be available for subsequent inclusion in the PDF. Each SAS statement that is registered with SAS2PDF in this way should be given a unique identifier, which is passed as a parameter, in this example `procmeansclass`.  
 5. `%s2p_includeoutput(procmeansclass, 0, 'My first SAS Code');` includes previously registered output in the final PDF. It takes three arguments. 
    1. The first argument (in this example `procmeansclass`) defines from which SAS statement output should be included.
