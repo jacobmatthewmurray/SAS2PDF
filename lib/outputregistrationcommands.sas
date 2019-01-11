@@ -58,25 +58,26 @@
 
 		%IF &n.=0 %THEN %LET n=;
 
-		data _null_;
-			length texcode $ 5000;
-			infile 	"&backuppath.\sasoutput\&outname.\&outname.&n..tex" obs=1 sharebuffers;
-			file "&backuppath.\sasoutput\&outname.\&outname.&n..tex";
-			input texcode;
+		data test;
+			infile 	"&backuppath.\sasoutput\&outname.\&outname.&n..tex" truncover;
+			file "&backuppath.\sasoutput\&outname.\&outname.&n._converted.tex";
+			input texcode $Char2000.;
 			if find(texcode,'\includegraphics','i') ge 1 then do;
 				call symput('_incltype', 'figure');
 				texcode=tranwrd(texcode,'\','/');
 				texcode=tranwrd(texcode,'/includegraphics','\includegraphics[width=.9\linewidth]');
-				put texcode;
 			end;
+			if find(texcode, byte(160), 'i') ge 1 then do;
+				texcode = tranwrd(texcode, byte(160), '~');
+			end;
+			put texcode $Char2000.;
 		run;
 
-
-		%t('\begin{'&_incltype.'}');
+		%t('\begin{'&_incltype.'}[h]');
 		%t('\caption{'&_caption.'}');
 		%t('\centering');
 
-		&SC "type &backuppath.\sasoutput\&outname.\&outname.&n..tex >> &backuppath.\&pdfname..tex" SHELL WAIT;
+		&SC "type &backuppath.\sasoutput\&outname.\&outname.&n._converted.tex >> &backuppath.\&pdfname..tex" SHELL WAIT;
 
 		%t('\end{'&_incltype.'}');
 	
